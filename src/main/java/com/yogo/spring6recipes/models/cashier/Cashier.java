@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 
 import com.yogo.spring6recipes.models.shop.ShoppingCart;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+
 public class Cashier {
 	private final String filename;
 	private final String path;
@@ -20,6 +23,7 @@ public class Cashier {
 		this.path = path;
 	}
 
+	@PostConstruct
 	public void openFile() throws IOException {
 		var checkoutPath = Path.of(path, filename + ".txt");
 		if (Files.notExists(checkoutPath.getParent())) {
@@ -34,6 +38,7 @@ public class Cashier {
 		writer.flush();
 	}
 
+	@PreDestroy
 	public void closeFile() throws IOException {
 		writer.close();
 	}
