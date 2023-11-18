@@ -24,7 +24,6 @@ public class Spring6RecipesApplication {
 	@Bean
 	public ApplicationRunner init() {
 		return (args) -> {
-
 			//useIocContainerLookup();
 			useInjectedBean();
 
