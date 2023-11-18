@@ -1,16 +1,11 @@
 package com.yogo.spring6recipes;
 
-import java.time.LocalDateTime;
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import com.yogo.spring6recipes.config.ShopConfig;
 
 @SpringBootApplication
 public class Spring6RecipesApplication {
@@ -24,49 +19,10 @@ public class Spring6RecipesApplication {
 	@Bean
 	public ApplicationRunner init() {
 		return (args) -> {
-			//useIocContainerLookup();
-			useInjectedBean();
+			
 
 		};
 	}
 
-	private void useIocContainerLookup() {
-		System.out.println("Using context lookup");
-		var text = "The I18N message in Locale %s for %s is: %s%n";
-		var cfg = ShopConfig.class;
-		try (var context = new AnnotationConfigApplicationContext(cfg)) {
-			var alertEng = context.getMessage("alert.checkout", null, Locale.US);
-			var alertInventoryEng = context.getMessage("alert.inventory.checkout",
-					new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.US);
-			System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertEng);
-			System.out.printf(text, Locale.US.toLanguageTag(), "alert.inventory.checkout", alertInventoryEng);
-
-			var alertFr = context.getMessage("alert.checkout", null, Locale.FRANCE);
-			var alertInventoryFr = context.getMessage("alert.inventory.checkout",
-					new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.FRANCE);
-
-			System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.checkout", alertFr);
-			System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.inventory.checkout", alertInventoryFr);
-		}
-
-	}
-
-	private void useInjectedBean() {
-		System.out.println("Using injected bean ....");
-		var text = "The I18N message in Locale %s for %s is: %s%n";
-
-		var alertEng = messageSource.getMessage("alert.checkout", null, Locale.US);
-		var alertInventoryEng = messageSource.getMessage("alert.inventory.checkout",
-				new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.US);
-		System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertEng);
-		System.out.printf(text, Locale.US.toLanguageTag(), "alert.inventory.checkout", alertInventoryEng);
-
-		var alertFr = messageSource.getMessage("alert.checkout", null, Locale.FRANCE);
-		var alertInventoryFr = messageSource.getMessage("alert.inventory.checkout",
-				new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.FRANCE);
-		System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.checkout", alertFr);
-		System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.inventory.checkout", alertInventoryFr);
-
-	}
 
 }
