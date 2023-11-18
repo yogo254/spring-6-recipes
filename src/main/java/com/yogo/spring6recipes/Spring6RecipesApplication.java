@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
 import com.yogo.spring6recipes.config.ShopConfig;
 
 @SpringBootApplication
 public class Spring6RecipesApplication {
 	@Autowired
-	private ReloadableResourceBundleMessageSource messageSource;
+	private MessageSource messageSource;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Spring6RecipesApplication.class, args);
@@ -26,7 +25,7 @@ public class Spring6RecipesApplication {
 	public ApplicationRunner init() {
 		return (args) -> {
 
-			useIocContainerLookup();
+			//useIocContainerLookup();
 			useInjectedBean();
 
 		};
@@ -40,7 +39,6 @@ public class Spring6RecipesApplication {
 			var alertEng = context.getMessage("alert.checkout", null, Locale.US);
 			var alertInventoryEng = context.getMessage("alert.inventory.checkout",
 					new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.US);
-
 			System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertEng);
 			System.out.printf(text, Locale.US.toLanguageTag(), "alert.inventory.checkout", alertInventoryEng);
 
@@ -48,7 +46,7 @@ public class Spring6RecipesApplication {
 			var alertInventoryFr = context.getMessage("alert.inventory.checkout",
 					new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.FRANCE);
 
-			System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertFr);
+			System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.checkout", alertFr);
 			System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.inventory.checkout", alertInventoryFr);
 		}
 
@@ -56,18 +54,18 @@ public class Spring6RecipesApplication {
 
 	private void useInjectedBean() {
 		System.out.println("Using injected bean ....");
-		var text = "The I18N message for %s is: %s%n";
+		var text = "The I18N message in Locale %s for %s is: %s%n";
 
-		var alert = messageSource.getMessage("alert.checkout", null, Locale.US);
-		var alert_inventory = messageSource.getMessage("alert.inventory.checkout",
+		var alertEng = messageSource.getMessage("alert.checkout", null, Locale.US);
+		var alertInventoryEng = messageSource.getMessage("alert.inventory.checkout",
 				new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.US);
-		System.out.printf(text, "alert.checkout", alert);
-		System.out.printf(text, "alert.inventory.checkout", alert_inventory);
+		System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertEng);
+		System.out.printf(text, Locale.US.toLanguageTag(), "alert.inventory.checkout", alertInventoryEng);
 
 		var alertFr = messageSource.getMessage("alert.checkout", null, Locale.FRANCE);
 		var alertInventoryFr = messageSource.getMessage("alert.inventory.checkout",
 				new Object[] { "[DVD-RW 3.0]", LocalDateTime.now() }, Locale.FRANCE);
-		System.out.printf(text, Locale.US.toLanguageTag(), "alert.checkout", alertFr);
+		System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.checkout", alertFr);
 		System.out.printf(text, Locale.FRANCE.toLanguageTag(), "alert.inventory.checkout", alertInventoryFr);
 
 	}
