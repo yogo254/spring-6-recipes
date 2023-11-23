@@ -8,11 +8,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.BeanNameAware;
+
 import com.yogo.spring6recipes.models.shop.ShoppingCart;
 
-public class Cashier {
-	private final String filename;
-	private final String path;
+public class Cashier implements BeanNameAware {
+	private String filename;
+	private String path;
 	private BufferedWriter writer;
 
 	public Cashier(String filename, String path) {
@@ -36,6 +38,11 @@ public class Cashier {
 
 	public void closeFile() throws IOException {
 		writer.close();
+	}
+
+	@Override
+	public void setBeanName(String name) {
+		this.filename = name;
 	}
 
 }
